@@ -12,8 +12,12 @@ public class ContaController implements ContaRepository {
 	
 	@Override
 	public void procurarPorNumero(int numero) {
-		// TODO Auto-generated method stub
+		var conta = buscarNaCollection(numero);
 		
+		if (conta != null)
+			conta.visualizar();
+		else
+			System.out.println("\nA Conta Número: " + numero + " não foi encontrada!");
 	}
 
 	@Override
@@ -31,14 +35,24 @@ public class ContaController implements ContaRepository {
 
 	@Override
 	public void atualizar(Conta conta) {
-		// TODO Auto-generated method stub
+		var buscaConta = buscarNaCollection(conta.getNumero());
 		
+		if (buscaConta != null) {
+			listarContas.set(listarContas.indexOf(buscaConta), conta);
+			System.out.println("\nA Conta Número: " + conta.getNumero() + " foi atualizada com sucesso");
+		} else
+			System.out.println("\nA Conta Número: " + conta.getNumero() + " não foi encontrada!");
 	}
 
 	@Override
 	public void deletar(int numero) {
-		// TODO Auto-generated method stub
+		var conta = buscarNaCollection(numero);
 		
+		if (conta != null) {
+			if (listarContas.remove(conta) == true)
+				System.out.println("\nA Conta número: " + numero + " foi deletada com sucesso!");
+		} else
+			System.out.println("\nA Conta número: " + numero + " não foi encontrada!");
 	}
 
 	@Override
@@ -63,7 +77,14 @@ public class ContaController implements ContaRepository {
 		return ++ numero;
 	}
 	
-
+	public Conta buscarNaCollection(int numero) {
+		for (var conta : listarContas) {
+			if (conta.getNumero() == numero) {
+				return conta;
+			}
+		}
+		return null;
+	}
 
 
 }
